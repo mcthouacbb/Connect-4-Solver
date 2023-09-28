@@ -25,3 +25,27 @@ void Board::addPiece(uint32_t sq, Color color)
     assert((m_Colors[static_cast<int>(color)] & (1ull << sq)) == 0);
     m_Colors[static_cast<int>(color)] |= (1ull << sq);
 }
+
+// from http://blog.gamesolver.org/solving-connect-four/06-bitboard/#:~:text=Checking%20for%20aligment
+bool Board::isWin() const
+{
+    Bitboard pieces = m_Colors[static_cast<int>(flip(m_SideToMove))];
+    
+    Bitboard m = pieces & (pieces >> 8);
+    if (m & (m >> 16))
+        return true;
+
+    m = pieces & (pieces >> 9);
+    if (m & (m >> 18))
+        return true;
+
+    m = pieces & (pieces >> 7);
+    if (m & (m >> 14))
+        return true;
+
+    m = pieces & (pieces >> 1);
+    if (m & (m >> 2))
+        return true;
+    
+    return false;
+}

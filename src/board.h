@@ -19,6 +19,8 @@ public:
     uint64_t key() const;
 
     Bitboard all() const;
+
+    bool isWin() const;
 private:
     void addPiece(uint32_t sq, Color color);
 
