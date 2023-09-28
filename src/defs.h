@@ -16,5 +16,16 @@ constexpr Color flip(Color c)
 struct Move
 {
     uint16_t sqIdx;
-    uint16_t column;
 };
+
+constexpr Move MOVE_NULL = Move();
+
+constexpr int sqColumn(int sq)
+{
+    return sq / 8;
+}
+
+constexpr int sqRow(int sq)
+{
+    return sq % 8;
+}

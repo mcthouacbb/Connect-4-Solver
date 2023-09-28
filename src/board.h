@@ -17,9 +17,16 @@ public:
 
     // 49 bit perfect hash
     uint64_t key() const;
+
+    Bitboard all() const;
 private:
     void addPiece(uint32_t sq, Color color);
 
     std::array<Bitboard, 2> m_Colors;
     Color m_SideToMove;
 };
+
+inline Bitboard Board::all() const
+{
+    return m_Colors[0] | m_Colors[1];
+}

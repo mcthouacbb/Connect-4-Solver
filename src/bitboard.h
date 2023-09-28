@@ -13,7 +13,8 @@
 
 using Bitboard = uint64_t;
 
-constexpr Bitboard BOTTOM_ROW = 0x40810204081ull;
+constexpr Bitboard BOTTOM_ROW = 0x01010101010101;
+constexpr Bitboard IN_BOARD = 0x3F3F3F3F3F3F3F;
 
 inline uint32_t getLSB(Bitboard bb)
 {

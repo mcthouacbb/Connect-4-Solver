@@ -10,11 +10,15 @@ endif()
 project(Connect-4)
 
 set(SRCS
+    "src/utils/static_vec.h"
+    
     "src/bitboard.h"
     "src/board.cpp"
     "src/board.h"
     "src/defs.h"
-    "src/main.cpp")
+    "src/main.cpp"
+    "src/movegen.cpp"
+    "src/movegen.h")
 
 add_executable(connect4 ${SRCS})
 
