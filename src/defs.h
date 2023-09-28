@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+
 enum class Color
 {
     RED,

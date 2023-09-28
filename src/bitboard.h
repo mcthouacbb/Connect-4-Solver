@@ -1,8 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <iostream>
-#include <bitset>
 #include <bit>
 
 #if defined(_MSC_VER)
@@ -14,6 +12,8 @@
 #endif
 
 using Bitboard = uint64_t;
+
+constexpr Bitboard BOTTOM_ROW = 0x40810204081ull;
 
 inline uint32_t getLSB(Bitboard bb)
 {

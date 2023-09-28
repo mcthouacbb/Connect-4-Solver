@@ -9,7 +9,12 @@ endif()
 
 project(Connect-4)
 
-set(SRCS "src/main.cpp")
+set(SRCS
+    "src/bitboard.h"
+    "src/board.cpp"
+    "src/board.h"
+    "src/defs.h"
+    "src/main.cpp")
 
 add_executable(connect4 ${SRCS})
 
