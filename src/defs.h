@@ -29,3 +29,5 @@ constexpr int sqRow(int sq)
 {
     return sq % 8;
 }
+
+constexpr int SCORE_WIN = 1000;

@@ -16,9 +16,12 @@ set(SRCS
     "src/board.cpp"
     "src/board.h"
     "src/defs.h"
+    "src/evaluate.h"
     "src/main.cpp"
     "src/movegen.cpp"
-    "src/movegen.h")
+    "src/movegen.h"
+    "src/search.cpp"
+    "src/search.h")
 
 add_executable(connect4 ${SRCS})
 

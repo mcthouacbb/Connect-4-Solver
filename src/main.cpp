@@ -1,6 +1,7 @@
 #include <iostream>
 #include "board.h"
 #include "movegen.h"
+#include "search.h"
 
 #include <chrono>
 
@@ -29,8 +30,11 @@ int main()
     std::cout << "Hello World!" << std::endl;
     Board board;
     auto t1 = std::chrono::high_resolution_clock::now();
-    uint64_t nodes = perft(board, 9);
+    Search search;
+    SearchLimits limits = {20};
+    int score = search.iterDeep(board, limits);
     auto t2 = std::chrono::high_resolution_clock::now();
-    std::cout << nodes << ' ' << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << std::endl;
+    std::cout << score << ' ' << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << std::endl;
+
     return 0;
 }
