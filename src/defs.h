@@ -16,7 +16,15 @@ constexpr Color flip(Color c)
 struct Move
 {
     uint16_t sqIdx;
+    Move() = default;
+    Move(uint16_t sqIdx);
 };
+
+inline Move::Move(uint16_t sqIdx)
+    : sqIdx(sqIdx)
+{
+    assert(sqIdx < 64 && ((1ull << sqIdx) & IN_BOARD));
+}
 
 constexpr Move MOVE_NULL = Move();
 
