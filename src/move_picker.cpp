@@ -17,8 +17,8 @@ constexpr int sqScores[56] = {
     1, 1, 1, 1, 1, 1,    0, 0
 };
 
-MovePicker::MovePicker(const Board& board, const History& history)
-    : m_Board(board), m_History(history), m_CurrIdx(0)
+MovePicker::MovePicker(const Board& board, const History& history, const Killer& killers)
+    : m_Board(board), m_History(history), m_Killers(killers), m_CurrIdx(0)
 {
     genMoves(m_MoveList, m_Board);
     scoreMoves();
@@ -29,7 +29,12 @@ void MovePicker::scoreMoves()
     for (uint32_t i = 0; i < size(); i++)
     {
         Move move = m_MoveList[i];
-        m_MoveScores[i] = sqScores[move.sqIdx] + m_History[static_cast<int>(m_Board.sideToMove())][move.sqIdx];
+        if (move == m_Killers[0])
+            m_MoveScores[i] = 1000000;
+        else if (move == m_Killers[1])
+            m_MoveScores[i] = 999999;
+        else
+            m_MoveScores[i] = sqScores[move.sqIdx] + m_History[static_cast<int>(m_Board.sideToMove())][move.sqIdx];
         // m_MoveScores[i] = 0;
     }
 }

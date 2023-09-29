@@ -5,11 +5,12 @@
 #include "movegen.h"
 
 using History = std::array<std::array<int, 56>, 2>;
+using Killer = std::array<Move, 2>;
 
 class MovePicker
 {
 public:
-    MovePicker(const Board& board, const History& history);
+    MovePicker(const Board& board, const History& history, const Killer& killers);
 
     uint32_t size() const;
     Move pickMove();
@@ -18,6 +19,7 @@ private:
 
     const Board& m_Board;
     const History& m_History;
+    const Killer& m_Killers;
     MoveList m_MoveList;
     std::array<int, 7> m_MoveScores;
     uint32_t m_CurrIdx;

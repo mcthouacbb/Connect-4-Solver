@@ -20,6 +20,9 @@ struct Move
     uint16_t sqIdx;
     Move() = default;
     Move(uint16_t sqIdx);
+
+    constexpr bool operator==(const Move& other) const = default;
+    constexpr bool operator!=(const Move& other) const = default;
 };
 
 inline Move::Move(uint16_t sqIdx)
