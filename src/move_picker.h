@@ -10,7 +10,7 @@ using Killer = std::array<Move, 2>;
 class MovePicker
 {
 public:
-    MovePicker(const Board& board, const History& history, const Killer& killers);
+    MovePicker(const Board& board, Move ttMove, const History& history, const Killer& killers);
 
     uint32_t size() const;
     Move pickMove();
@@ -20,6 +20,7 @@ private:
     const Board& m_Board;
     const History& m_History;
     const Killer& m_Killers;
+    Move m_TTMove;
     MoveList m_MoveList;
     std::array<int, 7> m_MoveScores;
     uint32_t m_CurrIdx;

@@ -67,7 +67,7 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         }
     }
 
-    MovePicker movePicker(board, m_History, m_Killers[searchPly->ply]);
+    MovePicker movePicker(board, ttMove, m_History, m_Killers[searchPly->ply]);
 
     if (movePicker.size() == 0)
         return 0;

@@ -22,6 +22,7 @@ TT::TT()
 
 void TT::setSize(size_t mb)
 {
+    assert(mb & (mb - 1));
     size_t bytes = mb * 1024 * 1024;
     size_t entries = bytes / sizeof(TTEntry);
     m_Entries.resize(entries);
@@ -30,7 +31,7 @@ void TT::setSize(size_t mb)
 TTEntry* TT::probe(uint64_t key, bool& found, int& ttScore, Move& ttMove, int& ttDepth, TTBound& ttBound)
 {
     uint64_t hash = splitMix64(key);
-    size_t index = hash % m_Entries.size();
+    size_t index = hash & (m_Entries.size() - 1);
     TTEntry* entry = &m_Entries[index];
     if (entry->key == key)
     {
