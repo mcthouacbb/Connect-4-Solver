@@ -37,8 +37,8 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
 {
     searchPly->pvLength = 0;
 
-    if (board.isWin())
-        return SCORE_WIN - searchPly->ply;
+    if (board.isLoss())
+        return -SCORE_WIN + searchPly->ply;
     
 
     MoveList moveList;

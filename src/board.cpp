@@ -27,7 +27,7 @@ void Board::addPiece(uint32_t sq, Color color)
 }
 
 // from http://blog.gamesolver.org/solving-connect-four/06-bitboard/#:~:text=Checking%20for%20aligment
-bool Board::isWin() const
+bool Board::isLoss() const
 {
     Bitboard pieces = m_Colors[static_cast<int>(flip(m_SideToMove))];
     

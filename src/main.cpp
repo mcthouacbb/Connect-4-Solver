@@ -7,7 +7,7 @@
 
 uint64_t perft(Board& board, int depth)
 {
-    if (board.isWin() || depth == 0)
+    if (board.isLoss() || depth == 0)
         return 1;
     MoveList moveList;
     genMoves(moveList, board);

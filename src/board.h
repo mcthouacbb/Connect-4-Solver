@@ -20,7 +20,7 @@ public:
 
     Bitboard all() const;
 
-    bool isWin() const;
+    bool isLoss() const;
 private:
     void addPiece(uint32_t sq, Color color);
 
