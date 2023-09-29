@@ -2,6 +2,7 @@
 
 #include "board.h"
 #include "movegen.h"
+#include "move_picker.h"
 
 constexpr int MAX_PLY = 42;
 
@@ -36,4 +37,5 @@ private:
 
     uint64_t m_Nodes;
     std::array<SearchPly, MAX_PLY> m_Plies;
+    History m_History;
 };

@@ -21,6 +21,8 @@ public:
     Bitboard all() const;
 
     bool isLoss() const;
+
+    Color sideToMove() const;
 private:
     void addPiece(uint32_t sq, Color color);
 
@@ -31,4 +33,9 @@ private:
 inline Bitboard Board::all() const
 {
     return m_Colors[0] | m_Colors[1];
+}
+
+inline Color Board::sideToMove() const
+{
+    return m_SideToMove;
 }

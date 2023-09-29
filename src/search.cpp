@@ -1,6 +1,5 @@
 #include "search.h"
 #include "evaluate.h"
-#include "move_picker.h"
 
 #include <algorithm>
 #include <iostream>
@@ -18,6 +17,7 @@ int Search::iterDeep(const Board& board, const SearchLimits& limits)
 {
     int score = 0;
     m_Nodes = 0;
+    m_History.fill({});
     for (int depth = 1; depth <= limits.maxDepth; depth++)
     {
         score = search(board, depth, -1000000, 1000000, &m_Plies[0]);
@@ -42,7 +42,7 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         return -SCORE_WIN + searchPly->ply;
     
 
-    MovePicker movePicker(board);
+    MovePicker movePicker(board, m_History);
 
     if (movePicker.size() == 0)
         return 0;
@@ -73,7 +73,10 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         }
 
         if (alpha >= beta)
+        {
+            m_History[static_cast<int>(board.sideToMove())][move.sqIdx] += depth * depth;
             break;
+        }
     }
 
     return bestScore;
