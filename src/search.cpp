@@ -41,7 +41,31 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
 
     if (board.isLoss())
         return -SCORE_WIN + searchPly->ply;
-    
+
+    bool found;
+    int ttScore;
+    Move ttMove;
+    TTEntry* entry;
+    {
+        int ttDepth;
+        TTBound ttBound;
+        entry = m_TT.probe(board.key(), found, ttScore, ttMove, ttDepth, ttBound);
+        if (found)
+        {
+            if (ttDepth >= depth && (
+                ttBound == TTBound::EXACT ||
+                (ttBound == TTBound::LOWER_BOUND && ttScore >= beta) ||
+                (ttBound == TTBound::UPPER_BOUND && ttScore <= alpha)
+                ))
+            {
+                return ttScore;
+            }
+        }
+        else
+        {
+            ttMove = MOVE_NULL;
+        }
+    }
 
     MovePicker movePicker(board, m_History, m_Killers[searchPly->ply]);
 
@@ -52,7 +76,8 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         return evaluate(board);
     
     int bestScore = -SCORE_WIN;
-    
+    Move bestMove = MOVE_NULL;
+    TTBound currBound = TTBound::UPPER_BOUND;
     for (uint32_t i = 0; i < movePicker.size(); i++)
     {
         Move move = movePicker.pickMove();
@@ -66,7 +91,9 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         
         if (score > alpha)
         {
+            currBound = TTBound::EXACT;
             alpha = score;
+            bestMove = move;
             
             searchPly->pvLength = searchPly[1].pvLength + 1;
             searchPly->pv[0] = move;
@@ -75,6 +102,7 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
 
         if (alpha >= beta)
         {
+            currBound = TTBound::LOWER_BOUND;
             m_History[static_cast<int>(board.sideToMove())][move.sqIdx] += depth * depth;
             if (m_Killers[searchPly->ply][0] != move)
             {
@@ -84,6 +112,8 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
             break;
         }
     }
+
+    m_TT.store(entry, board.key(), bestScore, bestMove, depth, currBound);
 
     return bestScore;
 }

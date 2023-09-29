@@ -23,7 +23,9 @@ set(SRCS
     "src/movegen.cpp"
     "src/movegen.h"
     "src/search.cpp"
-    "src/search.h")
+    "src/search.h"
+    "src/tt.cpp"
+    "src/tt.h")
 
 add_executable(connect4 ${SRCS})
 
