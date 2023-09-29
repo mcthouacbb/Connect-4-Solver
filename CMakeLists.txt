@@ -18,6 +18,8 @@ set(SRCS
     "src/defs.h"
     "src/evaluate.h"
     "src/main.cpp"
+    "src/move_picker.cpp"
+    "src/move_picker.h"
     "src/movegen.cpp"
     "src/movegen.h"
     "src/search.cpp"

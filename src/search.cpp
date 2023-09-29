@@ -1,5 +1,6 @@
 #include "search.h"
 #include "evaluate.h"
+#include "move_picker.h"
 
 #include <algorithm>
 #include <iostream>
@@ -41,10 +42,9 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         return -SCORE_WIN + searchPly->ply;
     
 
-    MoveList moveList;
-    genMoves(moveList, board);
+    MovePicker movePicker(board);
 
-    if (moveList.size() == 0)
+    if (movePicker.size() == 0)
         return 0;
     
     if (depth == 0)
@@ -52,8 +52,9 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
     
     int bestScore = -SCORE_WIN;
     
-    for (auto move : moveList)
+    for (uint32_t i = 0; i < movePicker.size(); i++)
     {
+        Move move = movePicker.pickMove();
         Board b = board;
         b.makeMove(move);
         m_Nodes++;

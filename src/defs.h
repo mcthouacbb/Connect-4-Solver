@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cassert>
+#include <cstdint>
+#include "bitboard.h"
 
 enum class Color
 {
