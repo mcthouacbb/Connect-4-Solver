@@ -103,7 +103,7 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         if (alpha >= beta)
         {
             currBound = TTBound::LOWER_BOUND;
-            m_History[static_cast<int>(board.sideToMove())][move.sqIdx] += depth * depth;
+            m_History[static_cast<int>(board.sideToMove())][move.sqIdx].update(depth * depth);
             if (m_Killers[searchPly->ply][0] != move)
             {
                 m_Killers[searchPly->ply][1] = m_Killers[searchPly->ply][0];

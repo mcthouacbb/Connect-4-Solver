@@ -17,7 +17,7 @@ constexpr int sqScores[56] = {
     1, 1, 1, 1, 1, 1,    0, 0
 };
 
-MovePicker::MovePicker(const Board& board, Move ttMove, const History& history, const Killer& killers)
+MovePicker::MovePicker(const Board& board, Move ttMove, const ColorToHistory& history, const Killer& killers)
     : m_Board(board), m_History(history), m_Killers(killers), m_TTMove(ttMove),
     m_CurrIdx(0)
 {
