@@ -17,11 +17,11 @@ constexpr int sqScores[56] = {
     1, 1, 1, 1, 1, 1,    0, 0
 };
 
-MovePicker::MovePicker(const Board& board, Move ttMove, const Killer& killers)
-    : m_Board(board), m_Killers(killers), m_TTMove(ttMove),
+MovePicker::MovePicker(const Board& board, Bitboard moveBB, Move ttMove, const Killer& killers)
+    : m_Board(board), m_MoveBB(moveBB), m_Killers(killers), m_TTMove(ttMove),
     m_CurrIdx(0)
 {
-    genMoves(m_MoveList, m_Board);
+    genMoves(m_MoveList, m_MoveBB);
     scoreMoves();
 }
 

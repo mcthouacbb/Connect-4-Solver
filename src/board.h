@@ -23,10 +23,15 @@ public:
     bool isLoss() const;
 
     Color sideToMove() const;
+
+    Bitboard threatsFor(Color color) const;
 private:
+    void calcThreatsFor(Color color);
+    Bitboard calcThreats(Bitboard us, Bitboard all);
     void addPiece(uint32_t sq, Color color);
 
     std::array<Bitboard, 2> m_Colors;
+    std::array<Bitboard, 2> m_Threats;
     Color m_SideToMove;
 };
 
@@ -38,4 +43,9 @@ inline Bitboard Board::all() const
 inline Color Board::sideToMove() const
 {
     return m_SideToMove;
+}
+
+inline Bitboard Board::threatsFor(Color color) const
+{
+    return m_Threats[static_cast<int>(color)];
 }

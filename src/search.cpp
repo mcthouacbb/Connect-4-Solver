@@ -59,8 +59,21 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
 	if (alpha >= beta)
 		return alpha;
 
-    if (board.isLoss())
-        return -SCORE_WIN + searchPly->ply;
+    Bitboard moves = moveLocations(board);
+    if (moves == 0)
+        return 0;
+
+    Bitboard oppWins = board.threatsFor(flip(board.sideToMove()));
+    Bitboard forcedMoves = moves & oppWins;
+
+    Bitboard nonLosingMoves = moves;
+    if (forcedMoves & (forcedMoves - 1))
+        return -SCORE_WIN + searchPly->ply + 2;
+    else if (forcedMoves)
+        nonLosingMoves &= forcedMoves;
+
+    // if (board.isLoss())
+        // return -SCORE_WIN + searchPly->ply;
 
     bool found;
     int ttScore;
@@ -87,7 +100,7 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         }
     }
 
-    MovePicker movePicker(board, ttMove, m_Killers[searchPly->ply]);
+    MovePicker movePicker(board, nonLosingMoves, ttMove, m_Killers[searchPly->ply]);
 
     if (movePicker.size() == 0)
         return 0;
