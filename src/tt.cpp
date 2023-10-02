@@ -13,6 +13,16 @@ uint64_t splitMix64(uint64_t x)
     return x;
 }
 
+int storeScore(int score, int ply)
+{
+    return isWinScore(score) ? score + (score < 0 ? ply : -ply) : score;
+}
+
+int probeScore(int score, int ply)
+{
+    return isWinScore(score) ? score - (score < 0 ? ply : -ply) : score;
+}
+
 }
 
 TT::TT()
@@ -28,7 +38,7 @@ void TT::setSize(size_t mb)
     m_Entries.resize(entries);
 }
 
-TTEntry* TT::probe(uint64_t key, bool& found, int& ttScore, Move& ttMove, int& ttDepth, TTBound& ttBound)
+TTEntry* TT::probe(uint64_t key, int ply, bool& found, int& ttScore, Move& ttMove, int& ttDepth, TTBound& ttBound)
 {
     uint64_t hash = splitMix64(key);
     size_t index = hash & (m_Entries.size() - 1);
@@ -36,7 +46,7 @@ TTEntry* TT::probe(uint64_t key, bool& found, int& ttScore, Move& ttMove, int& t
     if (entry->key == key)
     {
         found = true;
-        ttScore = static_cast<int>(entry->score);
+        ttScore = probeScore(entry->score, ply);
         ttMove = entry->move;
         ttDepth = entry->depth;
         ttBound = entry->bound;
@@ -46,10 +56,10 @@ TTEntry* TT::probe(uint64_t key, bool& found, int& ttScore, Move& ttMove, int& t
     return entry;
 }
 
-void TT::store(TTEntry* entry, uint64_t key, int score, Move move, int depth, TTBound bound)
+void TT::store(TTEntry* entry, uint64_t key, int ply, int score, Move move, int depth, TTBound bound)
 {
     entry->key = key;
-    entry->score = score;
+    entry->score = storeScore(score, ply);
     entry->move = move;
     entry->depth = depth;
     entry->bound = bound;

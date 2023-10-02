@@ -38,6 +38,11 @@ int Search::iterDeep(const Board& board, const SearchLimits& limits)
 int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly* searchPly)
 {
     searchPly->pvLength = 0;
+    
+	alpha = std::max(alpha, -SCORE_WIN + searchPly->ply);
+	beta = std::min(beta, SCORE_WIN - searchPly->ply);
+	if (alpha >= beta)
+		return alpha;
 
     if (board.isLoss())
         return -SCORE_WIN + searchPly->ply;
@@ -49,7 +54,7 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
     {
         int ttDepth;
         TTBound ttBound;
-        entry = m_TT.probe(board.key(), found, ttScore, ttMove, ttDepth, ttBound);
+        entry = m_TT.probe(board.key(), searchPly->ply, found, ttScore, ttMove, ttDepth, ttBound);
         if (found)
         {
             if (ttDepth >= depth && (
@@ -113,7 +118,7 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         }
     }
 
-    m_TT.store(entry, board.key(), bestScore, bestMove, depth, currBound);
+    m_TT.store(entry, board.key(), searchPly->ply, bestScore, bestMove, depth, currBound);
 
     return bestScore;
 }

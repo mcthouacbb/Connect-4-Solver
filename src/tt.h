@@ -28,8 +28,8 @@ public:
     TT();
     void setSize(size_t mb);
 
-    TTEntry* probe(uint64_t key, bool& found, int& ttScore, Move& ttMove, int& ttDepth, TTBound& ttBound);
-    void store(TTEntry* entry, uint64_t key, int score, Move move, int depth, TTBound bound);
+    TTEntry* probe(uint64_t key, int ply, bool& found, int& ttScore, Move& ttMove, int& ttDepth, TTBound& ttBound);
+    void store(TTEntry* entry, uint64_t key, int ply, int score, Move move, int depth, TTBound bound);
 private:
     std::vector<TTEntry> m_Entries;
 };

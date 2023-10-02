@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <cmath>
 #include "bitboard.h"
 
 enum class Color
@@ -44,3 +45,7 @@ constexpr int sqRow(int sq)
 }
 
 constexpr int SCORE_WIN = 1000;
+constexpr bool isWinScore(int score)
+{
+    return SCORE_WIN - std::abs(score) < 50;
+}
