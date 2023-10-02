@@ -27,5 +27,5 @@ private:
 
 inline uint32_t MovePicker::size() const
 {
-    return m_MoveList.size();
+    return static_cast<uint32_t>(m_MoveList.size());
 }

@@ -59,8 +59,8 @@ TTEntry* TT::probe(uint64_t key, int ply, bool& found, int& ttScore, Move& ttMov
 void TT::store(TTEntry* entry, uint64_t key, int ply, int score, Move move, int depth, TTBound bound)
 {
     entry->key = key;
-    entry->score = storeScore(score, ply);
+    entry->score = static_cast<int16_t>(storeScore(score, ply));
     entry->move = move;
-    entry->depth = depth;
+    entry->depth = static_cast<uint8_t>(depth);
     entry->bound = bound;
 }
