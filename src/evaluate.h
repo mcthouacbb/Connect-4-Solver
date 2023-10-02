@@ -2,7 +2,7 @@
 
 #include "board.h"
 
-int evaluate(const Board& board)
+int evaluate(const Board&)
 {
     return 0;
 }
