@@ -34,6 +34,22 @@ int Search::iterDeep(const Board& board, const SearchLimits& limits)
     return score;
 }
 
+int searchRoot(const Board& board, int depth)
+{
+    m_Plies[0].pvLength = 0;
+    if (board.isLoss())
+        return -SCORE_WIN;
+    Bitboard moves = moveLocations(board);
+    Bitboard usWins = board.threatsFor(board.sideToMove());
+    if (moves & usWins)
+    {
+        m_Plies[0].pvLength = 1;
+        m_Plies[0].pv[0] = Move(getLSB(moves & usWins));
+        return SCORE_WIN - 1;
+    }
+    return search(board, depth, -SCORE_WIN, SCORE_WIN, &m_Plies[0]);
+}
+
 int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly* searchPly)
 {
     searchPly->pvLength = 0;
