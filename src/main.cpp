@@ -31,7 +31,7 @@ int main()
     Board board;
     auto t1 = std::chrono::high_resolution_clock::now();
     Search search;
-    SearchLimits limits = {20};
+    SearchLimits limits = {30};
     int score = search.iterDeep(board, limits);
     auto t2 = std::chrono::high_resolution_clock::now();
     std::cout << score << ' ' << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << std::endl;
