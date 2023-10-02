@@ -17,7 +17,6 @@ int Search::iterDeep(const Board& board, const SearchLimits& limits)
 {
     int score = 0;
     m_Nodes = 0;
-    m_History.fill({});
     m_Killers.fill({});
     for (int depth = 1; depth <= limits.maxDepth; depth++)
     {
@@ -72,7 +71,7 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         }
     }
 
-    MovePicker movePicker(board, ttMove, m_History, m_Killers[searchPly->ply]);
+    MovePicker movePicker(board, ttMove, m_Killers[searchPly->ply]);
 
     if (movePicker.size() == 0)
         return 0;
@@ -108,7 +107,6 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         if (alpha >= beta)
         {
             currBound = TTBound::LOWER_BOUND;
-            m_History[static_cast<int>(board.sideToMove())][move.sqIdx].update(depth * depth);
             if (m_Killers[searchPly->ply][0] != move)
             {
                 m_Killers[searchPly->ply][1] = m_Killers[searchPly->ply][0];
