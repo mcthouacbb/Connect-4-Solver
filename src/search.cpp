@@ -68,13 +68,15 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
 
     Bitboard nonLosingMoves = moves;
     if (forcedMoves & (forcedMoves - 1))
-        return -SCORE_WIN + searchPly->ply + 2;
+        return searchPly->ply + 2;
     else if (forcedMoves)
-        nonLosingMoves &= forcedMoves;
+        nonLosingMoves = forcedMoves;
     nonLosingMoves &= ~(oppWins >> 1);
     if (board.isSymmetrical())
         nonLosingMoves &= RIGHT_SIDE;
 
+    if (nonLosingMoves == 0)
+        return -SCORE_WIN + searchPly->ply + 2;
     // if (board.isLoss())
         // return -SCORE_WIN + searchPly->ply;
 
@@ -104,9 +106,6 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
     }
 
     MovePicker movePicker(board, nonLosingMoves, ttMove, m_Killers[searchPly->ply]);
-
-    if (movePicker.size() == 0)
-        return 0;
     
     if (depth == 0)
         return evaluate(board);
