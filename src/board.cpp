@@ -148,5 +148,5 @@ Bitboard Board::calcThreats(Bitboard us, Bitboard all)
 	diag2 |= tmp & (us >> 3 * 9);
 	diag2 |= tmp & (us << 9);
 
-	return (vertical | horizontal | diag1 | diag2) & (~all);
+	return (vertical | horizontal | diag1 | diag2) & ~all & IN_BOARD;
 }
