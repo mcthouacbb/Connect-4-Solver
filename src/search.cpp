@@ -71,6 +71,7 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         return -SCORE_WIN + searchPly->ply + 2;
     else if (forcedMoves)
         nonLosingMoves &= forcedMoves;
+    nonLosingMoves &= ~(oppWins >> 1);
 
     // if (board.isLoss())
         // return -SCORE_WIN + searchPly->ply;
