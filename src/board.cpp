@@ -1,5 +1,6 @@
 #include "board.h"
 
+
 Board::Board()
     : m_Colors(), m_Threats(), m_SideToMove(Color::RED)
 {
@@ -20,6 +21,71 @@ uint64_t Board::key() const
 {
     uint64_t occupied = m_Colors[0] | m_Colors[1];
     return ((occupied << 1) | BOTTOM_ROW) ^ m_Colors[static_cast<int>(Color::RED)];
+}
+
+std::string Board::getString() const
+{
+	const char* between = "+---+---+---+---+---+---+---+\n";
+	std::string result;
+	Bitboard redLocs = threatsFor(Color::RED);
+	Bitboard yellowLocs = threatsFor(Color::YELLOW);
+	for (int j = 5; j >= 0; j--)
+	{
+		result += between;
+		for (int i = j; i < j + 56; i += 8)
+		{
+			result += "| ";
+			Bitboard square = 1ull << i;
+			Color color = Color::RED;
+            if (square & all())
+			{
+                if (square & piecesFor(Color::RED))
+                    color = Color::RED;
+                else if (square & piecesFor(Color::YELLOW))
+                    color = Color::YELLOW;
+				result += "\033[38;2;";
+				result += color == Color::RED ? "255;0;0m" : "255;255;0m";
+				result += "O";
+				result += "\033[0m";
+				// result += color == Color::RED ? 
+			}
+			else
+			{
+				if (square & redLocs)
+				{
+					if (square & yellowLocs)
+					{
+						result += "\033[38;2;";
+						result += "255;127;0m";
+						result += "W";
+						result += "\033[0m";
+					}
+					else
+					{
+						result += "\033[38;2;";
+						result += "255;0;0m";
+						result += "W";
+						result += "\033[0m";
+					}
+				}
+				else if (square & yellowLocs)
+				{
+					result += "\033[38;2;";
+					result += "255;255;0m";
+					result += "W";
+					result += "\033[0m";
+				}
+				else
+				{
+					result += ' ';
+				}
+			}
+			result += ' ';
+		}
+		result += "|\n";
+	}
+	result += between;
+	return result;
 }
 
 void Board::addPiece(uint32_t sq, Color color)

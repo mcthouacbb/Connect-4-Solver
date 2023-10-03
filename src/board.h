@@ -4,6 +4,7 @@
 #include "defs.h"
 
 #include <array>
+#include <string>
 
 class Board
 {
@@ -17,6 +18,7 @@ public:
 
     // 49 bit perfect hash
     uint64_t key() const;
+	std::string getString() const;
 
     Bitboard all() const;
 
@@ -24,6 +26,7 @@ public:
 
     Color sideToMove() const;
 
+    Bitboard piecesFor(Color color) const;
     Bitboard threatsFor(Color color) const;
 
     bool isSymmetrical() const;
@@ -45,6 +48,11 @@ inline Bitboard Board::all() const
 inline Color Board::sideToMove() const
 {
     return m_SideToMove;
+}
+
+inline Bitboard Board::piecesFor(Color color) const
+{
+    return m_Colors[static_cast<int>(color)];
 }
 
 inline Bitboard Board::threatsFor(Color color) const
