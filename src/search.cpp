@@ -13,32 +13,34 @@ Search::Search()
     }
 }
 
-int Search::iterDeep(const Board& board, const SearchLimits& limits)
+SearchInfo Search::iterDeep(const Board& board, const SearchLimits& limits)
 {
     int score = 0;
     m_Nodes = 0;
     m_Killers.fill({});
+    SearchInfo searchInfo;
     for (int depth = 1; depth <= limits.maxDepth; depth++)
     {
         score = searchRoot(board, depth);
-        SearchInfo searchInfo;
+        searchInfo = {};
         searchInfo.nodes = m_Nodes;
         searchInfo.score = score;
         searchInfo.depth = depth;
+        
+        std::copy(m_Plies[0].pv.begin(), m_Plies[0].pv.begin() + m_Plies[0].pvLength, searchInfo.pv.begin());
 
         if (score != 0 && score == limits.expectedScore)
-            return score;
+            return searchInfo;
 
         if (limits.reportInfo)
         {
-            std::copy(m_Plies[0].pv.begin(), m_Plies[0].pv.begin() + m_Plies[0].pvLength, searchInfo.pv.begin());
     
             std::cout << "Depth: " << searchInfo.depth << std::endl;
             std::cout << "\tScore: " << searchInfo.score << std::endl;
             std::cout << "\tNodes: " << searchInfo.nodes << std::endl;
         }
     }
-    return score;
+    return searchInfo;
 }
 
 int Search::searchRoot(const Board& board, int depth)

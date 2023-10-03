@@ -34,7 +34,7 @@ class Search
 public:
     Search();
 
-    int iterDeep(const Board& board, const SearchLimits& limits);
+    SearchInfo iterDeep(const Board& board, const SearchLimits& limits);
 private:
     int searchRoot(const Board& board, int depth);
     int search(const Board& board, int depth, int alpha, int beta, SearchPly* searchPly);

@@ -29,29 +29,33 @@ uint64_t perft(Board& board, int depth)
 
 int main()
 {
-    // std::cout << "Hello World!" << std::endl;
-    std::string file = readFile("res/test_L1_R1.txt");
+    std::string file = readFile("res/test_L3_R1.txt");
     std::vector<BenchPos> benches = loadBenchmark(file);
     Search search;
+    int passed = 0;
+    int failed = 0;
+    uint64_t totalNodes = 0;
     for (auto& bench : benches)
     {
         SearchLimits limits = {};
         limits.maxDepth = 14;
         limits.expectedScore = bench.expectedScore;
         limits.reportInfo = false;
-        int score = search.iterDeep(bench.board, limits);
-        if (score != bench.expectedScore)
+        SearchInfo info = search.iterDeep(bench.board, limits);
+        if (info.score != bench.expectedScore)
         {
-            std::cout << "Failed " << bench.moves << ", Expected: " << bench.expectedScore << " Got: " << score << std::endl;
+            failed++;
+            std::cout << "Failed " << bench.moves << ", Expected: " << bench.expectedScore << " Got: " << info.score << std::endl;
         }
+        else
+        {
+            passed++;
+        }
+        totalNodes += info.nodes;
     }
-    /*Board board = posFromMoves("44455554221").value();
-    std::cout << board.getString() << std::endl;
-    auto t1 = std::chrono::high_resolution_clock::now();
-    Search search;
-    SearchLimits limits = {30};
-    int score = search.iterDeep(board, limits);
-    auto t2 = std::chrono::high_resolution_clock::now();
-    std::cout << score << ' ' << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << std::endl;*/
+    std::cout << "Passed: " << passed << std::endl;
+    std::cout << "Failed: " << failed << std::endl;
+    std::cout << "Total nodes: " << totalNodes << std::endl;
+    std::cout << "Nodes per bench: " << totalNodes / benches.size() << std::endl;
     return 0;
 }
