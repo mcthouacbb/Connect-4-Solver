@@ -20,7 +20,7 @@ int Search::iterDeep(const Board& board, const SearchLimits& limits)
     m_Killers.fill({});
     for (int depth = 1; depth <= limits.maxDepth; depth++)
     {
-        score = search(board, depth, -1000000, 1000000, &m_Plies[0]);
+        score = searchRoot(board, depth);
         SearchInfo searchInfo;
         searchInfo.nodes = m_Nodes;
         searchInfo.score = score;
@@ -34,7 +34,7 @@ int Search::iterDeep(const Board& board, const SearchLimits& limits)
     return score;
 }
 
-int searchRoot(const Board& board, int depth)
+int Search::searchRoot(const Board& board, int depth)
 {
     m_Plies[0].pvLength = 0;
     if (board.isLoss())
@@ -72,6 +72,8 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
     else if (forcedMoves)
         nonLosingMoves &= forcedMoves;
     nonLosingMoves &= ~(oppWins >> 1);
+    if (board.isSymmetrical())
+        nonLosingMoves &= RIGHT_SIDE;
 
     // if (board.isLoss())
         // return -SCORE_WIN + searchPly->ply;

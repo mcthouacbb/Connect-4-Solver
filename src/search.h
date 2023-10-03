@@ -34,7 +34,7 @@ public:
 
     int iterDeep(const Board& board, const SearchLimits& limits);
 private:
-    int searchRoot(const Board& board, int depth, SearchPly* ply);
+    int searchRoot(const Board& board, int depth);
     int search(const Board& board, int depth, int alpha, int beta, SearchPly* searchPly);
 
     uint64_t m_Nodes;
