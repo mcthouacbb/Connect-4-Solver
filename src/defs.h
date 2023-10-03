@@ -44,6 +44,7 @@ constexpr int sqRow(int sq)
 }
 
 constexpr int SCORE_WIN = 1000;
+constexpr int SCORE_NONE = 1001;
 constexpr bool isWinScore(int score)
 {
     return SCORE_WIN - (score < 0 ? -score : score) < 50;

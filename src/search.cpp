@@ -25,11 +25,18 @@ int Search::iterDeep(const Board& board, const SearchLimits& limits)
         searchInfo.nodes = m_Nodes;
         searchInfo.score = score;
         searchInfo.depth = depth;
-        std::copy(m_Plies[0].pv.begin(), m_Plies[0].pv.begin() + m_Plies[0].pvLength, searchInfo.pv.begin());
-        
-        std::cout << "Depth: " << searchInfo.depth << std::endl;
-        std::cout << "\tScore: " << searchInfo.score << std::endl;
-        std::cout << "\tNodes: " << searchInfo.nodes << std::endl;
+
+        if (score != 0 && score == limits.expectedScore)
+            return score;
+
+        if (limits.reportInfo)
+        {
+            std::copy(m_Plies[0].pv.begin(), m_Plies[0].pv.begin() + m_Plies[0].pvLength, searchInfo.pv.begin());
+    
+            std::cout << "Depth: " << searchInfo.depth << std::endl;
+            std::cout << "\tScore: " << searchInfo.score << std::endl;
+            std::cout << "\tNodes: " << searchInfo.nodes << std::endl;
+        }
     }
     return score;
 }
