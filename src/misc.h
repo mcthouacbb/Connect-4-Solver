@@ -68,14 +68,14 @@ std::vector<BenchPos> loadBenchmark(const std::string& positions)
         if (score > 0)
         {
             int winMoves = 22 - score;
-            int winPly = winMoves * 2 - 1;
+            int winPly = winMoves * 2 - (board.value().sideToMove() == Color::RED ? 1 : 0);
             int currPly = popcount(board.value().all());
             score = SCORE_WIN - (winPly - currPly);
         }
         else if (score < 0)
         {
             int lossMoves = score + 22;
-            int lossPly = lossMoves * 2 - 1;
+            int lossPly = lossMoves * 2 - (board.value().sideToMove() == Color::YELLOW ? 1 : 0);
             int currPly = popcount(board.value().all());
             score = -SCORE_WIN + (lossPly - currPly);
         }
