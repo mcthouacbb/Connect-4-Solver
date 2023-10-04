@@ -41,6 +41,5 @@ private:
 
     uint64_t m_Nodes;
     std::array<SearchPly, MAX_PLY> m_Plies;
-    std::array<Killer, MAX_PLY> m_Killers;
     TT m_TT;
 };
