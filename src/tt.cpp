@@ -15,12 +15,12 @@ uint64_t splitMix64(uint64_t x)
 
 int storeScore(int score, int ply)
 {
-    return isWinScore(score) ? score + (score < 0 ? ply : -ply) : score;
+    return isWinScore(score) ? score + (score < 0 ? -ply : ply) : score;
 }
 
 int probeScore(int score, int ply)
 {
-    return isWinScore(score) ? score - (score < 0 ? ply : -ply) : score;
+    return isWinScore(score) ? score - (score < 0 ? -ply : ply) : score;
 }
 
 }
@@ -32,7 +32,7 @@ TT::TT()
 
 void TT::setSize(size_t mb)
 {
-    assert(mb & (mb - 1));
+    assert((mb & (mb - 1)) == 0);
     size_t bytes = mb * 1024 * 1024;
     size_t entries = bytes / sizeof(TTEntry);
     m_Entries.resize(entries);
