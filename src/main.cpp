@@ -29,7 +29,7 @@ uint64_t perft(Board& board, int depth)
 
 int main()
 {
-    std::string file = readFile("res/test_L3_R1.txt");
+    std::string file = readFile("res/test_L2_R2.txt");
     std::vector<BenchPos> benches = loadBenchmark(file);
     Search search;
     int passed = 0;
@@ -38,7 +38,7 @@ int main()
     for (auto& bench : benches)
     {
         SearchLimits limits = {};
-        limits.maxDepth = 14;
+        limits.maxDepth = 28;
         limits.expectedScore = bench.expectedScore;
         limits.reportInfo = false;
         SearchInfo info = search.iterDeep(bench.board, limits);
@@ -52,6 +52,8 @@ int main()
             passed++;
         }
         totalNodes += info.nodes;
+        if ((passed + failed) % 10 == 0)
+            std::cout << "Passed: " << passed << " Failed: " << failed << " npb: " << totalNodes / (passed + failed) << std::endl;
     }
     std::cout << "Passed: " << passed << std::endl;
     std::cout << "Failed: " << failed << std::endl;
