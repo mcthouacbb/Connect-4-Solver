@@ -1,5 +1,32 @@
 #include "board.h"
 
+Bitboard calcThreats(Bitboard us, Bitboard all)
+{
+	Bitboard vertical = (us << 1) & (us << 2) & (us << 3);
+	
+	Bitboard tmp = (us << 8) & (us << 2 * 8);
+	Bitboard horizontal = tmp & (us << 3 * 8);
+	horizontal |= tmp & (us >> 8);
+	tmp = (us >> 8) & (us >> 2 * 8);
+	horizontal |= tmp & (us >> 3 * 8);
+	horizontal |= tmp & (us << 8);
+
+	tmp = (us << 7) & (us << 2 * 7);
+	Bitboard diag1 = tmp & (us << 3 * 7);
+	diag1 |= tmp & (us >> 7);
+	tmp = (us >> 7) & (us >> 2 * 7);
+	diag1 |= tmp & (us >> 3 * 7);
+	diag1 |= tmp & (us << 7);
+
+	tmp = (us << 9) & (us << 2 * 9);
+	Bitboard diag2 = tmp & (us << 3 * 9);
+	diag2 |= tmp & (us >> 9);
+	tmp = (us >> 9) & (us >> 2 * 9);
+	diag2 |= tmp & (us >> 3 * 9);
+	diag2 |= tmp & (us << 9);
+
+	return (vertical | horizontal | diag1 | diag2) & ~all & IN_BOARD;
+}
 
 Board::Board()
     : m_Colors(), m_Threats(), m_SideToMove(Color::RED)
@@ -123,30 +150,7 @@ void Board::calcThreatsFor(Color color)
     m_Threats[static_cast<int>(color)] = calcThreats(m_Colors[static_cast<int>(color)], all());
 }
 
-Bitboard Board::calcThreats(Bitboard us, Bitboard all)
+Bitboard Board::threatsAfter(Move move, Color color) const
 {
-	Bitboard vertical = (us << 1) & (us << 2) & (us << 3);
-	
-	Bitboard tmp = (us << 8) & (us << 2 * 8);
-	Bitboard horizontal = tmp & (us << 3 * 8);
-	horizontal |= tmp & (us >> 8);
-	tmp = (us >> 8) & (us >> 2 * 8);
-	horizontal |= tmp & (us >> 3 * 8);
-	horizontal |= tmp & (us << 8);
-
-	tmp = (us << 7) & (us << 2 * 7);
-	Bitboard diag1 = tmp & (us << 3 * 7);
-	diag1 |= tmp & (us >> 7);
-	tmp = (us >> 7) & (us >> 2 * 7);
-	diag1 |= tmp & (us >> 3 * 7);
-	diag1 |= tmp & (us << 7);
-
-	tmp = (us << 9) & (us << 2 * 9);
-	Bitboard diag2 = tmp & (us << 3 * 9);
-	diag2 |= tmp & (us >> 9);
-	tmp = (us >> 9) & (us >> 2 * 9);
-	diag2 |= tmp & (us >> 3 * 9);
-	diag2 |= tmp & (us << 9);
-
-	return (vertical | horizontal | diag1 | diag2) & ~all & IN_BOARD;
+    return calcThreats(m_Colors[static_cast<int>(color)] | (1ull << move.sqIdx), all());
 }

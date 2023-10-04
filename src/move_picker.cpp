@@ -33,7 +33,7 @@ void MovePicker::scoreMoves()
         if (move == m_TTMove)
             m_MoveScores[i] = 2000000;
         else
-            m_MoveScores[i] = sqScores[move.sqIdx];
+            m_MoveScores[i] = 64 * popcount(m_Board.threatsAfter(move, m_Board.sideToMove())) + sqScores[move.sqIdx];
     }
 }
 

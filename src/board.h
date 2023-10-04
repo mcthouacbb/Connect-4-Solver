@@ -28,11 +28,11 @@ public:
 
     Bitboard piecesFor(Color color) const;
     Bitboard threatsFor(Color color) const;
+    Bitboard threatsAfter(Move move, Color color) const;
 
     bool isSymmetrical() const;
 private:
     void calcThreatsFor(Color color);
-    Bitboard calcThreats(Bitboard us, Bitboard all);
     void addPiece(uint32_t sq, Color color);
 
     std::array<Bitboard, 2> m_Colors;
