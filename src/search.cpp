@@ -127,7 +127,15 @@ int Search::search(const Board& board, int depth, int alpha, int beta, SearchPly
         Board b = board;
         b.makeMove(move);
         m_Nodes++;
-        int score = -search(b, depth - 1, -beta, -alpha, searchPly + 1);
+        int score;
+        if (i == 0)
+            score = -search(b, depth - 1, -beta, -alpha, searchPly + 1);
+        else
+        {
+            score = -search(b, depth - 1, -alpha - 1, -alpha, searchPly + 1);
+            if (score > alpha && score < beta)
+                score = -search(b, depth - 1, -beta, -alpha, searchPly + 1);
+        }
 
         if (score > bestScore)
             bestScore = score;
