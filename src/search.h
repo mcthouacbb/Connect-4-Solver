@@ -19,7 +19,6 @@ struct SearchLimits
 {
     bool reportInfo;
     int maxDepth;
-    int expectedScore;
 };
 
 struct SearchPly

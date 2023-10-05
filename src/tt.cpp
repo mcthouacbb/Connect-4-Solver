@@ -38,6 +38,11 @@ void TT::setSize(size_t mb)
     m_Entries.resize(entries);
 }
 
+void TT::clear()
+{
+    std::fill(m_Entries.begin(), m_Entries.end(), TTEntry{});
+}
+
 TTEntry* TT::probe(uint64_t key, int ply, bool& found, int& ttScore, Move& ttMove, int& ttDepth, TTBound& ttBound)
 {
     uint64_t hash = splitMix64(key);

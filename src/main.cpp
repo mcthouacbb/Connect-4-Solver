@@ -27,9 +27,9 @@ uint64_t perft(Board& board, int depth)
     return nodes;
 }
 
-int main()
+void runBench(std::string filepath)
 {
-    std::string file = readFile("res/test_L2_R2.txt");
+    std::string file = readFile(filepath);
     std::vector<BenchPos> benches = loadBenchmark(file);
     Search search;
     int passed = 0;
@@ -39,7 +39,6 @@ int main()
     {
         SearchLimits limits = {};
         limits.maxDepth = 28;
-        limits.expectedScore = bench.expectedScore;
         limits.reportInfo = false;
         SearchInfo info = search.iterDeep(bench.board, limits);
         if (info.score != bench.expectedScore)
@@ -59,5 +58,23 @@ int main()
     std::cout << "Failed: " << failed << std::endl;
     std::cout << "Total nodes: " << totalNodes << std::endl;
     std::cout << "Nodes per bench: " << totalNodes / benches.size() << std::endl;
+}
+
+int main(int argc, char** argv)
+{
+    if (argc > 1)
+    {
+        std::string arg(argv[1]);
+        runBench(arg);
+    }
+    else
+    {
+        SearchLimits limits;
+        limits.reportInfo = true;
+        limits.maxDepth = 42;
+        Search search;
+        Board board;
+        search.iterDeep(board, limits);
+    }
     return 0;
 }

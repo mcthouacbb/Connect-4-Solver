@@ -19,6 +19,8 @@ set(SRCS
     "src/evaluate.h"
     "src/history.h"
     "src/main.cpp"
+    "src/misc.cpp"
+    "src/misc.h"
     "src/move_picker.cpp"
     "src/move_picker.h"
     "src/movegen.cpp"
